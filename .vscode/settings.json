@@ -1,0 +1,9 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "[go]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "golang.go",
+    "editor.tabSize": 2
+  }
+}
