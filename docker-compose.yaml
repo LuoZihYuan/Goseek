@@ -1,0 +1,53 @@
+name: Goseek
+
+services:
+  goseek-dev:
+    profiles: ["goseek-dev"]
+    container_name: goseek-dev
+    image: goseek:dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: goseek_dev
+    ports:
+      - "8080:8080"
+    networks:
+      - goseek_network
+    environment:
+      - GIN_MODE=debug
+
+  goseek-stage:
+    profiles: ["goseek-stage"]
+    image: goseek:stage
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: goseek_stage
+    container_name: goseek-stage
+    ports:
+      - "8080:8080"
+    networks:
+      - goseek_network
+    environment:
+      - GIN_MODE=release
+
+  goseek-prod:
+    profiles: ["goseek-prod"]
+    image: goseek:prod
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: goseek_prod
+    container_name: goseek-prod
+    ports:
+      - "8080:8080"
+    networks:
+      - goseek_network
+    environment:
+      - GIN_MODE=release
+
+networks:
+  goseek_network:
+    driver: bridge
