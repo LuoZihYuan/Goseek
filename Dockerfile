@@ -43,7 +43,7 @@ CMD ["./api"]
 FROM alpine:latest AS goseek_prod
 WORKDIR /app
 COPY --from=build_prod /app/api .
-COPY --from=build_stage /app/data ./data
+COPY --from=build_prod /app/data ./data
 RUN addgroup -g 1000 appuser && \
   adduser -D -u 1000 -G appuser appuser
 RUN chown -R appuser:appuser /app
