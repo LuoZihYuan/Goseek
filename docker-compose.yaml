@@ -3,18 +3,21 @@ name: Goseek
 services:
   goseek-dev:
     profiles: ["goseek-dev"]
-    container_name: goseek-dev
     image: goseek:dev
     build:
       context: .
       dockerfile: Dockerfile
       target: goseek_dev
-    ports:
-      - "8080:8080"
-    networks:
-      - goseek_network
+    container_name: goseek-dev
     environment:
       - GIN_MODE=debug
+    networks:
+      - goseek_network
+    volumes:
+      - .:/app
+      - /app/tmp
+    ports:
+      - "8080:8080"
 
   goseek-stage:
     profiles: ["goseek-stage"]
@@ -25,12 +28,12 @@ services:
       dockerfile: Dockerfile
       target: goseek_stage
     container_name: goseek-stage
-    ports:
-      - "8080:8080"
-    networks:
-      - goseek_network
     environment:
       - GIN_MODE=release
+    networks:
+      - goseek_network
+    ports:
+      - "8080:8080"
 
   goseek-prod:
     profiles: ["goseek-prod"]
@@ -41,12 +44,12 @@ services:
       dockerfile: Dockerfile
       target: goseek_prod
     container_name: goseek-prod
-    ports:
-      - "8080:8080"
-    networks:
-      - goseek_network
     environment:
       - GIN_MODE=release
+    networks:
+      - goseek_network
+    ports:
+      - "8080:8080"
 
 networks:
   goseek_network:
