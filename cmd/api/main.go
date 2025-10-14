@@ -20,17 +20,22 @@ const DataPath = "data/products.json"
 // @contact.email zihyuan.luo@gmail.com
 // @license.name MIT
 // @license.url https://opensource.org/licenses/MIT
-// @BasePath /products
+// @tag.name (Root)
+// @tag.description Root / Server level services
 // @tag.name Products
 // @tag.description Product management operations
 func main() {
 
 	r := repository.NewProductsRepository(DataPath)
 	s := services.NewProductService(r)
-	h := handlers.NewProductsHandler(s)
+	rh := handlers.NewRootHandler()
+	ph := handlers.NewProductsHandler(s)
 
 	e := gin.Default()
-	router.SetupRoutes(e, h)
+	router.SetupRoutes(e, &router.AllHandlers{
+		Root:     rh,
+		Products: ph,
+	})
 	setupSwagger(e)
 
 	log.Println("Starting server on :8080")

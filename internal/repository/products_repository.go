@@ -37,7 +37,7 @@ func (r *ProductsRepository) LoadProducts(dataPath string) error {
 	return err
 }
 
-func (r *ProductsRepository) SearchByQuery(query string, maxSearches int, maxResults int) ([]*models.Product, error) {
+func (r *ProductsRepository) SearchProductsByQuery(query string, maxSearches int, maxResults int) ([]*models.Product, error) {
 	re, err := regexp.Compile("(?i)" + query)
 	if err != nil {
 		return nil, err

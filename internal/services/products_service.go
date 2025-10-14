@@ -16,8 +16,8 @@ func NewProductService(repo *repository.ProductsRepository) *ProductsService {
 	return &ProductsService{repo: repo}
 }
 
-func (s *ProductsService) SearchByQuery(query string, maxSearches int, maxResults int) ([]*models.Product, error) {
-	products, err := s.repo.SearchByQuery(query, maxSearches, maxResults)
+func (s *ProductsService) SearchProductsByQuery(query string, maxSearches int, maxResults int) ([]*models.Product, error) {
+	products, err := s.repo.SearchProductsByQuery(query, maxSearches, maxResults)
 	if err == shared.ErrProductNotFound {
 		return nil, err
 	} else if err != nil {

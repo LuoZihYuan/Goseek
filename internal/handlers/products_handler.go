@@ -20,7 +20,7 @@ func NewProductsHandler(service *services.ProductsService) *ProductsHandler {
 	return &ProductsHandler{service: service}
 }
 
-// SearchByQuery handles GET /search?q=
+// SearchProductsByQuery handles GET /products/search?q=
 // @Summary Search products by query
 // @Description Search for products by name or category using a query string
 // @ID searchProducts
@@ -31,8 +31,8 @@ func NewProductsHandler(service *services.ProductsService) *ProductsHandler {
 // @Failure 400 {object} models.HttpError
 // @Failure 404 {object} models.HttpError
 // @Failure 500 {object} models.HttpError
-// @Router /search [get]
-func (h *ProductsHandler) SearchByQuery(c *gin.Context) {
+// @Router /products/search [get]
+func (h *ProductsHandler) SearchProductsByQuery(c *gin.Context) {
 	const maxSearches = 100
 	const maxResults = 20
 
@@ -48,7 +48,7 @@ func (h *ProductsHandler) SearchByQuery(c *gin.Context) {
 	}
 
 	startTime := time.Now()
-	products, err := h.service.SearchByQuery(query, maxSearches, maxResults)
+	products, err := h.service.SearchProductsByQuery(query, maxSearches, maxResults)
 	searchTime := time.Since(startTime)
 
 	if err == shared.ErrProductNotFound {
