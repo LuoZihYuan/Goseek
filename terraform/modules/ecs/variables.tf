@@ -38,12 +38,6 @@ variable "task_role_arn" {
   type        = string
 }
 
-variable "desired_count" {
-  description = "Desired number of tasks"
-  type        = number
-  default     = 1
-}
-
 variable "task_cpu" {
   description = "Task CPU units"
   type        = string
@@ -54,4 +48,38 @@ variable "task_memory" {
   description = "Task memory in MB"
   type        = string
   default     = "512"
+}
+
+variable "target_group_arn" {
+  description = "ARN of the ALB target group"
+  type        = string
+}
+
+# Auto Scaling Variables
+variable "min_capacity" {
+  description = "Minimum number of tasks"
+  type        = number
+}
+
+variable "max_capacity" {
+  description = "Maximum number of tasks"
+  type        = number
+}
+
+variable "cpu_target_value" {
+  description = "Target CPU utilization percentage"
+  type        = number
+  default     = 70
+}
+
+variable "scale_in_cooldown" {
+  description = "Cooldown period (seconds) after scale in"
+  type        = number
+  default     = 300
+}
+
+variable "scale_out_cooldown" {
+  description = "Cooldown period (seconds) after scale out"
+  type        = number
+  default     = 300
 }

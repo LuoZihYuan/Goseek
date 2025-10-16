@@ -1,0 +1,16 @@
+# Example configuration for terraform
+# Copy this file to terraform.tfvars and customize as needed
+
+project_name = "goseek"
+environment  = "stage" # or "prod"
+
+# ECS Task Configuration
+task_cpu    = "256"
+task_memory = "512"
+
+# Auto Scaling Configuration
+min_capacity       = 2
+max_capacity       = 4
+cpu_target_value   = 70
+scale_in_cooldown  = 300
+scale_out_cooldown = 300

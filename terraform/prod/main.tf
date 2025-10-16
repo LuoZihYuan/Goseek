@@ -38,6 +38,16 @@ module "iam" {
   source = "../modules/iam"
 }
 
+module "alb" {
+  source = "../modules/alb"
+
+  project_name          = var.project_name
+  environment           = var.environment
+  vpc_id                = module.networking.vpc_id
+  subnet_ids            = module.networking.public_subnet_ids
+  alb_security_group_id = module.security.alb_security_group_id
+}
+
 module "ecs" {
   source = "../modules/ecs"
 
@@ -49,25 +59,14 @@ module "ecs" {
   security_group_id  = module.security.ecs_security_group_id
   execution_role_arn = module.iam.ecs_task_execution_role_arn
   task_role_arn      = module.iam.ecs_task_role_arn
-  desired_count      = var.desired_count
   task_cpu           = var.task_cpu
   task_memory        = var.task_memory
-}
+  target_group_arn   = module.alb.target_group_arn
 
-# Uncomment when RDS and Secrets are needed
-# module "secrets" {
-#   source = "../modules/secrets"
-#
-#   project_name = var.project_name
-#   environment  = var.environment
-# }
-#
-# module "rds" {
-#   source = "../modules/rds"
-#
-#   project_name      = var.project_name
-#   environment       = var.environment
-#   subnet_ids        = module.networking.public_subnet_ids
-#   security_group_id = module.security.rds_security_group_id
-#   master_password   = module.secrets.db_password
-# }
+  # Auto Scaling configuration
+  min_capacity       = var.min_capacity
+  max_capacity       = var.max_capacity
+  cpu_target_value   = var.cpu_target_value
+  scale_in_cooldown  = var.scale_in_cooldown
+  scale_out_cooldown = var.scale_out_cooldown
+}

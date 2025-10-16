@@ -92,14 +92,12 @@ deploy-stage:  ## Deploy to AWS staging (requires Terraform)
 	echo "Staging deployed to AWS!" && \
 	echo "Waiting for service to become stable..." && \
 	aws ecs wait services-stable --cluster goseek-stage --services goseek-stage && \
-	echo "Service is stable. Getting public IP..." && \
-	TASK_ARN=$$(aws ecs list-tasks --cluster goseek-stage --service-name goseek-stage --query 'taskArns[0]' --output text 2>/dev/null) && \
-	if [ -n "$$TASK_ARN" ] && [ "$$TASK_ARN" != "None" ]; then \
-		ENI_ID=$$(aws ecs describe-tasks --cluster goseek-stage --tasks $$TASK_ARN --query 'tasks[0].attachments[0].details[?name==`networkInterfaceId`].value' --output text 2>/dev/null) && \
-		PUBLIC_IP=$$(aws ec2 describe-network-interfaces --network-interface-ids $$ENI_ID --query 'NetworkInterfaces[0].Association.PublicIp' --output text 2>/dev/null) && \
-		echo "API available at: http://$$PUBLIC_IP:8080"; \
+	echo "Service is stable. Getting ALB endpoint..." && \
+	ALB_DNS=$$(cd terraform/stage && terraform output -raw alb_dns_name 2>/dev/null && cd ../..) && \
+	if [ -n "$$ALB_DNS" ]; then \
+		echo "API available at: http://$$ALB_DNS"; \
 	else \
-		echo "Task not running yet. View status: make log-stage"; \
+		echo "Failed to retrieve ALB DNS name. Check: make log-stage"; \
 	fi
 
 log-stage:  ## View AWS staging logs (Ctrl+C to exit)
@@ -201,14 +199,12 @@ deploy-prod:  ## Deploy to AWS production (requires Terraform)
 	echo "Production deployed to AWS!" && \
 	echo "Waiting for service to become stable..." && \
 	aws ecs wait services-stable --cluster goseek-prod --services goseek-prod && \
-	echo "Service is stable. Getting public IP..." && \
-	TASK_ARN=$$(aws ecs list-tasks --cluster goseek-prod --service-name goseek-prod --query 'taskArns[0]' --output text 2>/dev/null) && \
-	if [ -n "$$TASK_ARN" ] && [ "$$TASK_ARN" != "None" ]; then \
-		ENI_ID=$$(aws ecs describe-tasks --cluster goseek-prod --tasks $$TASK_ARN --query 'tasks[0].attachments[0].details[?name==`networkInterfaceId`].value' --output text 2>/dev/null) && \
-		PUBLIC_IP=$$(aws ec2 describe-network-interfaces --network-interface-ids $$ENI_ID --query 'NetworkInterfaces[0].Association.PublicIp' --output text 2>/dev/null) && \
-		echo "API available at: http://$$PUBLIC_IP:8080"; \
+	echo "Service is stable. Getting ALB endpoint..." && \
+	ALB_DNS=$$(cd terraform/prod && terraform output -raw alb_dns_name 2>/dev/null && cd ../..) && \
+	if [ -n "$$ALB_DNS" ]; then \
+		echo "API available at: http://$$ALB_DNS"; \
 	else \
-		echo "Task not running yet. View status: make log-prod"; \
+		echo "Failed to retrieve ALB DNS name. Check: make log-prod"; \
 	fi
 
 log-prod:  ## View AWS production logs (Ctrl+C to exit)

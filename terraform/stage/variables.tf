@@ -10,18 +10,6 @@ variable "environment" {
   default     = "stage"
 }
 
-variable "vpc_cidr" {
-  description = "VPC CIDR block"
-  type        = string
-  default     = "10.0.0.0/16"
-}
-
-variable "desired_count" {
-  description = "Desired number of ECS tasks"
-  type        = number
-  default     = 1
-}
-
 variable "task_cpu" {
   description = "Task CPU units"
   type        = string
@@ -32,4 +20,35 @@ variable "task_memory" {
   description = "Task memory in MB"
   type        = string
   default     = "512"
+}
+
+# Auto Scaling Variables
+variable "min_capacity" {
+  description = "Minimum number of ECS tasks"
+  type        = number
+  default     = 1
+}
+
+variable "max_capacity" {
+  description = "Maximum number of ECS tasks"
+  type        = number
+  default     = 2
+}
+
+variable "cpu_target_value" {
+  description = "Target CPU utilization percentage for autoscaling"
+  type        = number
+  default     = 70
+}
+
+variable "scale_in_cooldown" {
+  description = "Cooldown period in seconds after scale in"
+  type        = number
+  default     = 300
+}
+
+variable "scale_out_cooldown" {
+  description = "Cooldown period in seconds after scale out"
+  type        = number
+  default     = 300
 }
