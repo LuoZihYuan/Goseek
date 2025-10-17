@@ -6,11 +6,11 @@ High-performance product search API built with Go — lightweight, scalable, and
 
 - [✅ Prerequisites](#-prerequisites)
 - [🚀 Getting Started](#-getting-started)
-  - [Setup](#setup)
-  - [Development (Local)](#development-local)
-  - [Staging (AWS)](#staging-aws)
-  - [Production (AWS)](#production-aws)
-  - [Cleanup](#cleanup)
+  - [⚙️ Setup](#️-setup)
+  - [💻 Development (Local)](#-development-local)
+  - [🧪 Staging (AWS)](#-staging-aws)
+  - [🌐 Production (AWS)](#-production-aws)
+  - [🧹 Cleanup](#-cleanup)
 - [📁 Project Structure](#-project-structure)
 
 ## ✅ Prerequisites
@@ -23,7 +23,7 @@ High-performance product search API built with Go — lightweight, scalable, and
 
 ## 🚀 Getting Started
 
-### Setup
+### ⚙️ Setup
 
 Downloads Go dependencies for IDE autocomplete and navigation features. Run this once after cloning the repository.
 
@@ -31,7 +31,7 @@ Downloads Go dependencies for IDE autocomplete and navigation features. Run this
 make setup
 ```
 
-### Development (Local)
+### 💻 Development (Local)
 
 #### Deploy
 
@@ -83,7 +83,7 @@ Removes containers, volumes, and images. Frees disk space.
 make destroy-dev
 ```
 
-### Staging (AWS)
+### 🧪 Staging (AWS)
 
 #### Deploy
 
@@ -143,7 +143,7 @@ Deletes all AWS staging resources and removes local Docker images. Requires typi
 make destroy-stage
 ```
 
-### Production (AWS)
+### 🌐 Production (AWS)
 
 #### Deploy
 
@@ -203,7 +203,7 @@ Deletes all AWS production resources and removes local Docker images. Requires t
 make destroy-prod
 ```
 
-### Cleanup
+### 🧹 Cleanup
 
 Removes local build artifacts (dist/, tmp/, docs/). Does not affect Docker containers or AWS resources.
 
